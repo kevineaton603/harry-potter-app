@@ -1,14 +1,13 @@
+import { Provider } from "react-redux";
 import "./App.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import HomeScreen from "./screens/HomeScreen";
-
-const queryClient = new QueryClient();
+import { store } from "./store";
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
       <HomeScreen />
-    </QueryClientProvider>
+    </Provider>
   );
 }
 

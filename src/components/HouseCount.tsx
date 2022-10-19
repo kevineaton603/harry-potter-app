@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { getCharactersAsync } from "../api/harry-potter-api";
+import { useMemo } from "react";
+import { useGetCharactersQuery } from "../services/character";
 
 export type HouseNames =
   | "Gryffindor"
@@ -8,15 +8,15 @@ export type HouseNames =
   | "Slytherin";
 
 const HouseCount: React.FC<{ house: HouseNames }> = ({ house }) => {
-  const { data } = useQuery(["characters"], () => getCharactersAsync(), {
-    select: (characters) =>
-      characters.filter((character) => character.house === house),
-  });
-
+  const { data } = useGetCharactersQuery();
+  const count = useMemo(
+    () => data?.filter((character) => character.house === house),
+    [data, house]
+  );
   return (
     <div>
       <h3>{house}</h3>
-      <span>{data?.length ?? 0}</span>
+      <span>{count?.length ?? 0}</span>
     </div>
   );
 };
