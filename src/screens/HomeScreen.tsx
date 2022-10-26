@@ -1,3 +1,11 @@
+import {
+  Grid,
+  MenuItem,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useMemo, useState } from "react";
 import HouseCount from "../components/HouseCount";
 import { useGetCharactersQuery } from "../services/character";
@@ -21,8 +29,8 @@ const HomeScreen: React.FC = () => {
   }, [data, name, status]);
 
   return (
-    <div className="App">
-      <h1>Harry Potter App</h1>
+    <Stack spacing={2}>
+      <Typography variant="h1">Harry Potter App</Typography>
       <div
         style={{
           display: "flex",
@@ -36,20 +44,43 @@ const HomeScreen: React.FC = () => {
         <HouseCount house="Ravenclaw" />
         <HouseCount house="Slytherin" />
       </div>
-      <input
+      <TextField
         type="text"
         value={name}
         onChange={(e) => setName(e.currentTarget.value)}
+        fullWidth
+        label={"Name"}
       />
-      <select name="dead-or-alive" onChange={(e) => setStatus(e.target.value)}>
-        <option value=""></option>
-        <option value="alive">Alive</option>
-        <option value="dead">Dead</option>
-      </select>
+      <TextField
+        label={"Dead or Alive"}
+        fullWidth
+        select
+        onChange={(e) => setStatus(e.target.value)}
+      >
+        <MenuItem value={""}></MenuItem>
+        <MenuItem value={"dead"}>Dead</MenuItem>
+        <MenuItem value={"alive"}>Alive</MenuItem>
+      </TextField>
       {filteredCharacters?.map((character, index) => (
-        <div key={`${character.name}-${index}`}>{character.name}</div>
+        <Paper key={`${character.name}-${index}`}>
+          <Grid container direction={"row"}>
+            <Grid item xs={4}>
+              <img
+                src={character.image}
+                alt={character.name}
+                style={{ height: "100px" }}
+              />
+            </Grid>
+            <Grid item xs={8}>
+              <Stack direction={"column"} sx={{ p: 1 }}>
+                <Typography variant="h3">{character.name}</Typography>
+                <Typography variant="caption">{character.house}</Typography>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Paper>
       ))}
-    </div>
+    </Stack>
   );
 };
 
